@@ -47,12 +47,6 @@ public class UserEntity {
     @Column(name = "mini_room_name")
     private String miniRoomName;
 
-    @Column(name = "visitor_today_num")
-    private int visitorTodayNum;
-
-    @Column(name = "visitor_total_num")
-    private int visitorTotalNum;
-
 
     public int getUserId() {
         return userId;
@@ -150,19 +144,5 @@ public class UserEntity {
         this.miniRoomName = miniRoomName;
     }
 
-    public int getVisitorTodayNum() {
-        return visitorTodayNum;
-    }
 
-    public void setVisitorTodayNum(int visitorTodayNum) {
-        this.visitorTodayNum = visitorTodayNum;
-    }
-
-    public int getVisitorTotalNum() {
-        return visitorTotalNum;
-    }
-
-    public void setVisitorTotalNum(int visitorTotalNum) {
-        this.visitorTotalNum = visitorTotalNum;
-    }
 }
