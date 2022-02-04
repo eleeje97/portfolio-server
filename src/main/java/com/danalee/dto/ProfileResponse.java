@@ -4,24 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
-@Getter
 @Setter
-public class HomeResponse {
+@Getter
+public class ProfileResponse {
     String user;
     int today;
     int total;
-    String todayFeelings;
-    String stateMsg;
+    String title;
+    String introMsg;
     String name;
     String birth;
     String email;
-    String blog;
-    String github;
-    String title;
-    String miniRoomName;
-    ArrayList<String> recentVisitors;
-
+    String phone;
+    List<String> keywords;
+    List<String> skills;
 }
