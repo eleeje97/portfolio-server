@@ -4,14 +4,14 @@ import com.danalee.dto.*;
 import com.danalee.entity.*;
 import com.danalee.repo.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.jni.Local;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -123,12 +123,11 @@ public class APIController {
         List<VisitorDTO> visitors = new ArrayList<>();
 
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
         for (int i = 0; i < visitorEntities.size(); i++) {
             VisitorEntity entity = visitorEntities.get(visitorEntities.size() - (i+1));
             visitors.add(new VisitorDTO(i+1,
                     entity.getVisitorNickname(),
-                    formatter.format(entity.getVisitorRegDate()),
+                    entity.getVisitorRegDate(),
                     entity.getVisitorMsg()));
         }
 
@@ -136,6 +135,21 @@ public class APIController {
         VisitorResponse response = new VisitorResponse(user, visitors);
         System.out.println("Requested URL: /portfolio/visitor?user=" + user);
         return response;
+    }
+
+
+    @PostMapping("/visitor")
+    public String registerVisitor(@RequestBody VisitorRequest request) {
+        UserEntity userEntity = userRepository.findByEngName(request.getUser());
+        int userId = userEntity.getUserId();
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm");
+        String formattedNow = now.format(formatter);
+        visitorRepository.save(new VisitorEntity(userId, request.getNickName(), request.getMsg(), formattedNow));
+
+        System.out.println("Requested URL: /portfolio/visitor (POST) user=" + request.getUser());
+        return "Register SUCCESS!\nuser: " + request.getUser() + "\nnickname: " + request.getNickName() + "\nmsg: " + request.getMsg();
     }
 
 
@@ -147,7 +161,7 @@ public class APIController {
         VisitorCountEntity visitorCountEntity = visitorCountRepository.findByUserIdAndVisitDate(userId, formattedToday);
 
         if (visitorCountEntity == null) {
-            visitorCountRepository.save(new VisitorCountEntity(userId, formattedToday, 0));
+            visitorCountRepository.save(new VisitorCountEntity(userId, formattedToday, 1));
         } else {
             visitorCountEntity.setVisitCount(visitorCountEntity.getVisitCount()+1);
             visitorCountRepository.save(visitorCountEntity);

@@ -3,7 +3,6 @@ package com.danalee.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Builder
@@ -25,6 +24,12 @@ public class VisitorEntity {
     private String visitorMsg;
 
     @Column(name = "visitor_reg_date")
-    private Date visitorRegDate;
+    private String visitorRegDate;
 
+    public VisitorEntity(int userId, String visitorNickname, String visitorMsg, String visitorRegDate) {
+        this.userId = userId;
+        this.visitorNickname = visitorNickname;
+        this.visitorMsg = visitorMsg;
+        this.visitorRegDate = visitorRegDate;
+    }
 }
