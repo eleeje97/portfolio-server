@@ -4,10 +4,8 @@ import com.danalee.dto.*;
 import com.danalee.entity.*;
 import com.danalee.repo.*;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,6 +36,18 @@ public class APIController {
 
         // 최근 방명록
         ArrayList<String> recentVisitors = new ArrayList<>();
+        List<VisitorEntity> visitorEntities = visitorRepository.findAllByUserId(userId);
+        if (visitorEntities.size() > 3) {
+            for (int i = 0; i < 3; i++) {
+                VisitorEntity entity = visitorEntities.get(visitorEntities.size() - (i+1));
+                recentVisitors.add(entity.getVisitorMsg() + " (" + entity.getVisitorNickname() + ")");
+            }
+        } else {
+            for (int i = 0; i < visitorEntities.size(); i++) {
+                VisitorEntity entity = visitorEntities.get(visitorEntities.size() - (i+1));
+                recentVisitors.add(entity.getVisitorMsg() + " (" + entity.getVisitorNickname() + ")");
+            }
+        }
 
         HomeResponse response = new HomeResponse(user,
                 todayCount,
@@ -125,7 +135,7 @@ public class APIController {
 
         for (int i = 0; i < visitorEntities.size(); i++) {
             VisitorEntity entity = visitorEntities.get(visitorEntities.size() - (i+1));
-            visitors.add(new VisitorDTO(i+1,
+            visitors.add(new VisitorDTO(visitorEntities.size() - i,
                     entity.getVisitorNickname(),
                     entity.getVisitorRegDate(),
                     entity.getVisitorMsg()));

@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface VisitorRepository extends JpaRepository<VisitorEntity, Integer> {
     List<VisitorEntity> findAllByUserId(int userId);
+    List<VisitorEntity> findThreeByUserId(int userId);
 }
