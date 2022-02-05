@@ -1,14 +1,12 @@
 package com.danalee.controller;
 
-import com.danalee.dto.HomeResponse;
-import com.danalee.dto.ProfileResponse;
-import com.danalee.dto.ProjectDTO;
-import com.danalee.dto.ProjectResponse;
+import com.danalee.dto.*;
 import com.danalee.entity.*;
 import com.danalee.repo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -113,6 +111,30 @@ public class APIController {
         
         ProjectResponse response = new ProjectResponse(user, projects);
         System.out.println("Requested URL: /portfolio/project?user=" + user);
+        return response;
+    }
+
+
+    @GetMapping("/visitor")
+    public VisitorResponse getVisitors(@RequestParam("user") String user) {
+        UserEntity userEntity = userRepository.findByEngName(user);
+        int userId = userEntity.getUserId();
+        List<VisitorEntity> visitorEntities = visitorRepository.findAllByUserId(userId);
+        List<VisitorDTO> visitors = new ArrayList<>();
+
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+        for (int i = 0; i < visitorEntities.size(); i++) {
+            VisitorEntity entity = visitorEntities.get(visitorEntities.size() - (i+1));
+            visitors.add(new VisitorDTO(i+1,
+                    entity.getVisitorNickname(),
+                    formatter.format(entity.getVisitorRegDate()),
+                    entity.getVisitorMsg()));
+        }
+
+
+        VisitorResponse response = new VisitorResponse(user, visitors);
+        System.out.println("Requested URL: /portfolio/visitor?user=" + user);
         return response;
     }
 
