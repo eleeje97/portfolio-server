@@ -3,7 +3,6 @@ package com.danalee.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Getter
 @Builder
@@ -28,10 +27,10 @@ public class ProjectEntity {
     private String projectImgPath;
 
     @Column(name = "project_start_date")
-    private Date projectStartDate;
+    private String projectStartDate;
 
     @Column(name = "project_end_date")
-    private Date projectEndDate;
+    private String projectEndDate;
 
     @Column(name = "project_description")
     private String projectDescription;

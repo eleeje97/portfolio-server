@@ -2,10 +2,9 @@ package com.danalee.controller;
 
 import com.danalee.dto.HomeResponse;
 import com.danalee.dto.ProfileResponse;
-import com.danalee.entity.ProfileEntity;
-import com.danalee.entity.UserEntity;
-import com.danalee.entity.VisitorCountEntity;
-import com.danalee.entity.VisitorEntity;
+import com.danalee.dto.ProjectDTO;
+import com.danalee.dto.ProjectResponse;
+import com.danalee.entity.*;
 import com.danalee.repo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -85,6 +84,35 @@ public class APIController {
                 skills);
 
         System.out.println("Requested URL: /portfolio/profile?user=" + user);
+        return response;
+    }
+
+
+    @GetMapping("/project")
+    public ProjectResponse getProjects(@RequestParam("user") String user) {
+        UserEntity userEntity = userRepository.findByEngName(user);
+        int userId = userEntity.getUserId();
+        List<ProjectEntity> projectEntities = projectRepository.findAllByUserId(userId);
+        List<ProjectDTO> projects = new ArrayList<>();
+
+        for (int i = 0; i < projectEntities.size(); i++) {
+            ProjectEntity entity = projectEntities.get(i);
+            projects.add(new ProjectDTO(i+1,
+                    entity.getProjectLang(),
+                    entity.getProjectTitle(),
+                    entity.getProjectImgPath(),
+                    entity.getProjectStartDate(),
+                    entity.getProjectEndDate(),
+                    entity.getProjectDescription(),
+                    Arrays.asList(entity.getProjectFrontSkill().split(",")),
+                    Arrays.asList(entity.getProjectBackSkill().split(",")),
+                    entity.getDeploymentUrl(),
+                    entity.getGithubUrl()));
+        }
+
+        
+        ProjectResponse response = new ProjectResponse(user, projects);
+        System.out.println("Requested URL: /portfolio/project?user=" + user);
         return response;
     }
 
