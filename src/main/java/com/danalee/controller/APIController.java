@@ -4,6 +4,8 @@ import com.danalee.dto.*;
 import com.danalee.entity.*;
 import com.danalee.repo.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -135,23 +137,31 @@ public class APIController {
 
 
     @GetMapping("/visitor")
-    public VisitorResponse getVisitors(@RequestParam("user") String user) {
+    public VisitorResponse getVisitors(@RequestParam("user") String user, Pageable pageable) {
         UserEntity userEntity = userRepository.findByEngName(user);
         int userId = userEntity.getUserId();
-        List<VisitorEntity> visitorEntities = visitorRepository.findAllByUserId(userId);
+        Page<VisitorEntity> visitorEntityPage = visitorRepository.findAllByUserIdOrderByVisitorIdDesc(userId, pageable);
+        List<VisitorEntity> visitorEntities = visitorEntityPage.getContent();
+        int page = pageable.getPageNumber() + 1;
+        int size = pageable.getPageSize();
+        int totalPage = visitorEntityPage.getTotalPages();
+
         List<VisitorDTO> visitors = new ArrayList<>();
-
-
         for (int i = 0; i < visitorEntities.size(); i++) {
-            VisitorEntity entity = visitorEntities.get(visitorEntities.size() - (i+1));
-            visitors.add(new VisitorDTO(visitorEntities.size() - i,
+            VisitorEntity entity = visitorEntities.get(i);
+            int no = ((int) visitorEntityPage.getTotalElements() % size) + (size * (totalPage - page)) - i;
+            visitors.add(new VisitorDTO(no,
                     entity.getVisitorNickname(),
                     entity.getVisitorRegDate(),
                     entity.getVisitorMsg()));
         }
 
 
-        VisitorResponse response = new VisitorResponse(user, visitors);
+        VisitorResponse response = new VisitorResponse(user,
+                page,
+                size,
+                totalPage,
+                visitors);
         System.out.println("Requested URL: /portfolio/visitor?user=" + user);
         return response;
     }

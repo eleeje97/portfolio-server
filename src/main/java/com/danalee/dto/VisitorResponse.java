@@ -11,5 +11,8 @@ import java.util.List;
 @Getter
 public class VisitorResponse {
     String user;
+    int page;
+    int size;
+    int totalPage;
     List<VisitorDTO> visitors;
 }
