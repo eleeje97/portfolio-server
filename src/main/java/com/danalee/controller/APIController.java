@@ -74,22 +74,15 @@ public class APIController {
         int userId = userEntity.getUserId();
         ProfileEntity profileEntity = profileRepository.findById(userId).get();
 
-        int todayCount = getTodayCount(userId);
-        int totalCount = getTotalCount(userId);
         List<String> keywords = Arrays.asList(profileEntity.getKeyword().split(","));
-        List<String> skills = Arrays.asList(profileEntity.getSkill().split(","));
 
         ProfileResponse response = new ProfileResponse(user,
-                todayCount,
-                totalCount,
-                userEntity.getTitle(),
                 profileEntity.getIntroMsg(),
                 userEntity.getName(),
                 userEntity.getBirth(),
                 userEntity.getEmail(),
                 userEntity.getPhone(),
-                keywords,
-                skills);
+                keywords);
 
         System.out.println("Requested URL: /portfolio/profile?user=" + user);
         return response;
