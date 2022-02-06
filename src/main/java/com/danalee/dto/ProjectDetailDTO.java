@@ -9,10 +9,11 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
-public class ProjectDTO {
+public class ProjectDetailDTO {
     int no;
     String lang;
     String title;
+    String regDate;
     String imgPath;
     String startDate;
     String endDate;

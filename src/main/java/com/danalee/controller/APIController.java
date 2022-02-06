@@ -89,32 +89,48 @@ public class APIController {
     }
 
 
-    @GetMapping("/project")
+    @GetMapping("/project/list")
     public ProjectResponse getProjects(@RequestParam("user") String user) {
         UserEntity userEntity = userRepository.findByEngName(user);
         int userId = userEntity.getUserId();
         List<ProjectEntity> projectEntities = projectRepository.findAllByUserId(userId);
-        List<ProjectDTO> projects = new ArrayList<>();
+        List<ProjectListDTO> projects = new ArrayList<>();
 
         for (int i = 0; i < projectEntities.size(); i++) {
             ProjectEntity entity = projectEntities.get(i);
-            projects.add(new ProjectDTO(i+1,
+            projects.add(new ProjectListDTO(i+1,
                     entity.getProjectLang(),
-                    entity.getProjectTitle(),
-                    entity.getProjectImgPath(),
-                    entity.getProjectStartDate(),
-                    entity.getProjectEndDate(),
-                    entity.getProjectDescription(),
-                    Arrays.asList(entity.getProjectFrontSkill().split(",")),
-                    Arrays.asList(entity.getProjectBackSkill().split(",")),
-                    entity.getDeploymentUrl(),
-                    entity.getGithubUrl()));
+                    entity.getProjectTitle()));
         }
 
         
         ProjectResponse response = new ProjectResponse(user, projects);
-        System.out.println("Requested URL: /portfolio/project?user=" + user);
+        System.out.println("Requested URL: /portfolio/project/list?user=" + user);
         return response;
+    }
+
+
+    @GetMapping("/project/detail")
+    public ProjectDetailDTO getProjectDetail(@RequestParam("user") String user, @RequestParam("projectNo") int projectNo) {
+        UserEntity userEntity = userRepository.findByEngName(user);
+        int userId = userEntity.getUserId();
+        List<ProjectEntity> projectEntities = projectRepository.findAllByUserId(userId);
+        ProjectEntity projectEntity = projectEntities.get(projectNo - 1);
+
+        ProjectDetailDTO project = new ProjectDetailDTO(projectNo,
+                projectEntity.getProjectLang(),
+                projectEntity.getProjectTitle(),
+                projectEntity.getProjectRegDate(),
+                projectEntity.getProjectImgPath(),
+                projectEntity.getProjectStartDate(),
+                projectEntity.getProjectEndDate(),
+                projectEntity.getProjectDescription(),
+                Arrays.asList(projectEntity.getProjectFrontSkill().split(",")),
+                Arrays.asList(projectEntity.getProjectBackSkill().split(",")),
+                projectEntity.getDeploymentUrl(),
+                projectEntity.getGithubUrl());
+
+        return project;
     }
 
 

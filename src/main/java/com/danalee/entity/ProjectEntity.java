@@ -23,6 +23,9 @@ public class ProjectEntity {
     @Column(name = "project_title")
     private String projectTitle;
 
+    @Column(name = "project_reg_date")
+    private String projectRegDate;
+
     @Column(name = "project_img_path")
     private String projectImgPath;
 

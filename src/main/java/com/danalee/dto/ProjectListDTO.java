@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @AllArgsConstructor
 @Setter
 @Getter
-public class ProjectResponse {
-    String user;
-    List<ProjectListDTO> projects;
+public class ProjectListDTO {
+    int no;
+    String lang;
+    String title;
 }
