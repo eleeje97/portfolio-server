@@ -11,5 +11,6 @@ public class VisitorDTO {
     int no;
     String nickName;
     String regDate;
+    String emoji;
     String msg;
 }

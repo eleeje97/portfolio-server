@@ -23,6 +23,18 @@ public class APIController {
     private final VisitorRepository visitorRepository;
     private final VisitorCountRepository visitorCountRepository;
 
+    private static final HashMap<String, String> animalEmoji = new HashMap<String, String>() {
+        {
+            put("호랑이", "🐯");
+            put("여우", "🦊");
+            put("토끼", "🐰");
+            put("판다", "🐼");
+            put("펭귄", "🐧");
+            put("돼지", "🐷");
+            put("곰", "🐻");
+        }
+    };
+
 
     @GetMapping("/home")
     public HomeResponse getUserInfo(@RequestParam("user") String user) {
@@ -153,6 +165,7 @@ public class APIController {
             visitors.add(new VisitorDTO(no,
                     entity.getVisitorNickname(),
                     entity.getVisitorRegDate(),
+                    animalEmoji.get(entity.getVisitorNickname().split(" ")[1]),
                     entity.getVisitorMsg()));
         }
 
