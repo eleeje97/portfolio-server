@@ -66,7 +66,9 @@ public class APIController {
         HomeResponse response = new HomeResponse(user,
                 todayCount,
                 totalCount,
+                userEntity.getUserImgPath(),
                 userEntity.getTodayFeelings(),
+                userEntity.getFeelingImgPath(),
                 userEntity.getStateMsg(),
                 userEntity.getName(),
                 userEntity.getBirth(),
@@ -75,6 +77,7 @@ public class APIController {
                 userEntity.getGithub(),
                 userEntity.getTitle(),
                 userEntity.getMiniRoomName(),
+                userEntity.getMiniroomImgPath(),
                 recentVisitors);
 
         System.out.println("Requested URL: /portfolio/home?user=" + user);
@@ -107,7 +110,7 @@ public class APIController {
     public ProjectResponse getProjects(@RequestParam("user") String user) {
         UserEntity userEntity = userRepository.findByEngName(user);
         int userId = userEntity.getUserId();
-        List<ProjectEntity> projectEntities = projectRepository.findAllByUserId(userId);
+        List<ProjectEntity> projectEntities = projectRepository.findAllByUserIdOrderByProjectRegDateDesc(userId);
         List<ProjectListDTO> projects = new ArrayList<>();
 
         for (int i = 0; i < projectEntities.size(); i++) {
@@ -128,8 +131,24 @@ public class APIController {
     public ProjectDetailDTO getProjectDetail(@RequestParam("user") String user, @RequestParam("projectNo") int projectNo) {
         UserEntity userEntity = userRepository.findByEngName(user);
         int userId = userEntity.getUserId();
-        List<ProjectEntity> projectEntities = projectRepository.findAllByUserId(userId);
+        List<ProjectEntity> projectEntities = projectRepository.findAllByUserIdOrderByProjectRegDateDesc(userId);
         ProjectEntity projectEntity = projectEntities.get(projectNo - 1);
+
+        List<String> frontSkills = new ArrayList<>();
+        List<String> backSkills = new ArrayList<>();
+
+        if (projectEntity.getProjectFrontSkill() != null) {
+            for (String skill : projectEntity.getProjectFrontSkill().split(",")) {
+                frontSkills.add(skill);
+            }
+        }
+
+        if (projectEntity.getProjectBackSkill() != null) {
+            for (String skill : projectEntity.getProjectBackSkill().split(",")) {
+                backSkills.add(skill);
+            }
+
+        }
 
         ProjectDetailDTO project = new ProjectDetailDTO(projectNo,
                 projectEntity.getProjectLang(),
@@ -139,8 +158,8 @@ public class APIController {
                 projectEntity.getProjectStartDate(),
                 projectEntity.getProjectEndDate(),
                 projectEntity.getProjectDescription(),
-                Arrays.asList(projectEntity.getProjectFrontSkill().split(",")),
-                Arrays.asList(projectEntity.getProjectBackSkill().split(",")),
+                frontSkills,
+                backSkills,
                 projectEntity.getDeploymentUrl(),
                 projectEntity.getGithubUrl());
 

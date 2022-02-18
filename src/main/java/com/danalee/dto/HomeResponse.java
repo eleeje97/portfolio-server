@@ -13,7 +13,9 @@ public class HomeResponse {
     String user;
     int today;
     int total;
+    String userImgPath;
     String todayFeelings;
+    String feelingImgPath;
     String stateMsg;
     String name;
     String birth;
@@ -22,6 +24,7 @@ public class HomeResponse {
     String github;
     String title;
     String miniRoomName;
+    String miniroomImgPath;
     ArrayList<String> recentVisitors;
 
 }

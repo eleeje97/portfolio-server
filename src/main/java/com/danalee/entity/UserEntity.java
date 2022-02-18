@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,102 +48,13 @@ public class UserEntity {
     @Column(name = "mini_room_name")
     private String miniRoomName;
 
+    @Column(name = "user_img_path")
+    private String userImgPath;
 
-    public int getUserId() {
-        return userId;
-    }
+    @Column(name = "feeling_img_path")
+    private String feelingImgPath;
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getEngName() {
-        return engName;
-    }
-
-    public void setEngName(String engName) {
-        this.engName = engName;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getBirth() {
-        return birth;
-    }
-
-    public void setBirth(String birth) {
-        this.birth = birth;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getGithub() {
-        return github;
-    }
-
-    public void setGithub(String github) {
-        this.github = github;
-    }
-
-    public String getBlog() {
-        return blog;
-    }
-
-    public void setBlog(String blog) {
-        this.blog = blog;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getStateMsg() {
-        return stateMsg;
-    }
-
-    public void setStateMsg(String stateMsg) {
-        this.stateMsg = stateMsg;
-    }
-
-    public String getTodayFeelings() {
-        return todayFeelings;
-    }
-
-    public void setTodayFeelings(String todayFeelings) {
-        this.todayFeelings = todayFeelings;
-    }
-
-    public String getMiniRoomName() {
-        return miniRoomName;
-    }
-
-    public void setMiniRoomName(String miniRoomName) {
-        this.miniRoomName = miniRoomName;
-    }
-
+    @Column(name = "miniroom_img_path")
+    private String miniroomImgPath;
 
 }
