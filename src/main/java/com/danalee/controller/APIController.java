@@ -180,7 +180,7 @@ public class APIController {
         List<VisitorDTO> visitors = new ArrayList<>();
         for (int i = 0; i < visitorEntities.size(); i++) {
             VisitorEntity entity = visitorEntities.get(i);
-            int no = ((int) visitorEntityPage.getTotalElements() % size) + (size * (totalPage - page)) - i;
+            int no = (((int) visitorEntityPage.getTotalElements() - ((page-1) * size)) - i);
             visitors.add(new VisitorDTO(no,
                     entity.getVisitorNickname(),
                     entity.getVisitorRegDate(),
