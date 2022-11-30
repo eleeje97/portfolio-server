@@ -35,6 +35,7 @@ public class APIController {
         }
     };
 
+    private static final String bucketBaseUrl = "https://whooper-portfolio-bucket.s3.ap-northeast-2.amazonaws.com";
 
     @GetMapping("/home")
     public HomeResponse getUserInfo(@RequestParam("user") String user) {
@@ -66,9 +67,9 @@ public class APIController {
         HomeResponse response = new HomeResponse(user,
                 todayCount,
                 totalCount,
-                userEntity.getUserImgPath(),
+                bucketBaseUrl + userEntity.getUserImgPath(),
                 userEntity.getTodayFeelings(),
-                userEntity.getFeelingImgPath(),
+                bucketBaseUrl + userEntity.getFeelingImgPath(),
                 userEntity.getStateMsg(),
                 userEntity.getName(),
                 userEntity.getBirth(),
@@ -77,7 +78,7 @@ public class APIController {
                 userEntity.getGithub(),
                 userEntity.getTitle(),
                 userEntity.getMiniRoomName(),
-                userEntity.getMiniroomImgPath(),
+                bucketBaseUrl + userEntity.getMiniroomImgPath(),
                 recentVisitors);
 
         System.out.println("Requested URL: /portfolio/home?user=" + user);
@@ -154,7 +155,7 @@ public class APIController {
                 projectEntity.getProjectLang(),
                 projectEntity.getProjectTitle(),
                 projectEntity.getProjectRegDate(),
-                projectEntity.getProjectImgPath(),
+                bucketBaseUrl + projectEntity.getProjectImgPath(),
                 projectEntity.getProjectStartDate(),
                 projectEntity.getProjectEndDate(),
                 projectEntity.getProjectDescription(),
